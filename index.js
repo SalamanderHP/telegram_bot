@@ -14,7 +14,7 @@ const USER_ID = {
   LONG: "5186919276",
   THONG: "1421003795",
   PHONG: "1471909653",
-  DUNG: "1471909653"
+  DUNG: "751237479"
 }
 
 const getUserName = async (ctx, userId) => {
@@ -30,7 +30,7 @@ bot.help((ctx) => ctx.reply());
 
 bot.command('image', async (ctx) => {
   const imageSize = '256x256';
-  
+
   try {
     var prompt = ctx.message.text?.slice(7) + '';
     const response = await openai.createImage({
