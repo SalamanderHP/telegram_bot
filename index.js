@@ -29,9 +29,6 @@ bot.start((ctx) => ctx.reply('oke oke'));
 bot.help((ctx) => ctx.reply("Help yourself"));
 
 bot.on(message('text'), async (ctx, next) => {
-  if (ctx.entities) {
-    return await next();
-  }
   console.log("Message sent", ctx.message);
 
   if (ctx.message.from?.id == USER_ID.LONG && (ctx.message?.text?.toLowerCase()?.includes("emi"))) {
