@@ -28,18 +28,20 @@ const getUserName = async (ctx, userId) => {
 bot.start((ctx) => ctx.reply('oke oke'));
 bot.help((ctx) => ctx.reply("Help yourself"));
 
-bot.on(message('text'), async (ctx) => {
+bot.on(message('text'), async (ctx, next) => {
+  if (ctx.entities) {
+    return await next();
+  }
   console.log("Message sent", ctx.message);
+
   if (ctx.message.from?.id == USER_ID.LONG && (ctx.message?.text?.toLowerCase()?.includes("emi"))) {
     await ctx.reply(`@${ctx.from.username} nhắc ít thôi`);
   }
 
-  if (ctx.message?.text?.toLowerCase()?.includes("emi")) {
-    await ctx.reply(`@${ctx.from.username} nhắc ít thôi`);
-  }
+  await next();
 });
 
-bot.command('image', async (ctx) => {
+bot.command('image', async (ctx, next) => {
   const imageSize = '256x256';
 
   try {
@@ -52,6 +54,8 @@ bot.command('image', async (ctx) => {
 
     const imageUrl = response.data.data[0].url;
     await ctx.replyWithPhoto(Input.fromURL(imageUrl))
+
+    await next();
   } catch (error) {
     if (error.response) {
       console.log(error.response.status);
@@ -62,7 +66,7 @@ bot.command('image', async (ctx) => {
   }
 });
 
-bot.command('music', async (ctx) => {
+bot.command('music', async (ctx, next) => {
   console.log("MUSIC COMMAND", ctx.message.from);
   let userId = ctx.message.from?.id?.toString();
   switch (userId) {
@@ -82,10 +86,13 @@ bot.command('music', async (ctx) => {
       await ctx.reply("Who the fuck are you?");
       break;
   }
+
+  await next();
 });
 
-bot.command('bruce', async (ctx) => {
+bot.command('bruce', async (ctx, next) => {
   await ctx.replyWithPhoto(Input.fromURL("https://scontent.fhan14-1.fna.fbcdn.net/v/t1.18169-9/1982064_301028530058023_6464268228576422604_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=174925&_nc_ohc=zGD77QRlPhoAX_mmnZ1&_nc_ht=scontent.fhan14-1.fna&oh=00_AfAQnX5eqF7IVCVKrbLV83ZyEvBuBnNq2A1m8_8KC0Y-eQ&oe=63CA31A4"))
+  await next();
 });
 
 bot.catch((error) => {
